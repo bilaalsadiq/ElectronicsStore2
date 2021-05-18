@@ -1,0 +1,42 @@
+﻿@model ElectronicsStore2.Models.product
+
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>View Product</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@Url.Content(Model.item_img)" height="400">
+        </div>
+        <div class="col-md-6">
+            <h1 @*class="display-2*@">@Html.DisplayFor(i => i.item_name)</h1>
+            <h4>@Html.DisplayFor(i => i.item_brand)</h4>
+            <h4>@Html.DisplayFor(i => i.item_price)</h4>
+
+            @*STOCK LOGIC*@
+
+            @if (Model.item_stock > 0 && Model.item_stock <= 5)
+            {
+                <h6><i>@Model.item_stock units in stock</i></h6>
+                <h6><strong>Stock running out</strong></h6>
+            }
+
+            else if (Model.item_stock == 0)
+            {
+                <h6 style="color:red;"><strong>Out of Stock</strong></h6>
+            }
+
+            else
+            {
+                <h6><i>@Model.item_stock units in stock</i></h6>
+            }
+
+            <hr>
+            @Html.Raw(Model.item_shortdesc)
+        </div>
+
+    </div>
+</div>

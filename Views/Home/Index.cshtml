@@ -1,0 +1,85 @@
+﻿@model IEnumerable<ElectronicsStore2.Models.product>
+
+@{
+    ViewBag.Title = "Index";
+}
+<h2>Inventory Manager</h2>
+<h5>@DateTime.Now.ToString("dddd, dd MMMM yyyy h:mm tt")</h5>
+<hr />
+
+
+@using (Html.BeginForm())
+{
+    <div class="form-group row">
+        <div class="col-md-3">
+            @Html.Label("Product:")
+            @Html.TextBox("SearchString", null, new { @class = "form-control", placeholder = "Search for Product" })
+        </div>
+        <div class="col-md-3">
+            @Html.Label("Category:")
+            @Html.DropDownList("ProductCategory", null, "All", new { @class = "form-control", placeholder = "Select Product Category" })
+        </div>
+        <div class="col-md-3">
+            @Html.Label("Parent Item:")
+            @Html.DropDownList("ParentItem", null, "All", new { @class = "form-control" })
+        </div>
+        <div class="col-md-3" id="search-button">
+            @Html.Label(" ")
+            <input type="submit" value="Search Product" class="btn btn-default btn-block" />
+        </div>
+    </div>
+}
+
+<hr />
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">
+                <div class="btn btn-block btn-success">@Html.ActionLink("Add New Product", "AddProduct", null, new { id = "add-product-btn" })</div>
+            </th>
+            <th scope="col">@Html.DisplayNameFor(Model => Model.item_name)</th>
+            <th scope="col">@Html.DisplayNameFor(Model => Model.item_brand)</th>
+            <th scope="col">@Html.DisplayNameFor(Model => Model.item_price)</th>
+            <th scope="col">@Html.DisplayNameFor(Model => Model.item_stock)</th>
+            <th scope="col">@Html.DisplayNameFor(Model => Model.item_parent)</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><img src="@Url.Content(item.item_img)" height="150"></td>
+                @*    <td><h6 style="font-weight:bold">@Html.DisplayFor(Model => item.item_name)</h6></td>*@
+                <td><strong>@Html.ActionLink(item.item_name, "View", new { id = item.id })</strong></td>
+
+
+                <td>@Html.DisplayFor(Model => item.item_brand)</td>
+                <td>@Html.DisplayFor(Model => item.item_price)</td>
+
+                @if ((item.item_stock) >= 1)
+                {
+                    <td>@Html.DisplayFor(Model => item.item_stock) units in stock</td>
+                }
+
+                else
+                {
+                    <td style="color:red; font-weight:bold;">Out of Stock</td>
+                }
+
+                <td>@Html.DisplayFor(Model => item.item_parent)</td>
+                <td>
+                    @*      @Html.ActionLink("View Product", "View", new { id = item.id })
+                    *@      <div class="btn btn-block btn-info">
+                        @Html.ActionLink("Edit Product", "Edit", new { id = item.id }, new { id = "edit-btn" })
+                    </div>
+                    <br />
+                    <div class="btn btn-block btn-danger">
+                        @Html.ActionLink("Delete Product", "Delete", new { id = item.id }, new { id = "delete-btn" })
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
